@@ -18,6 +18,7 @@
   "homepage": "https://github.com/panevka/custom-react-hmr#readme",
   "description": "",
   "dependencies": {
+    "chokidar": "^4.0.3",
     "express": "^5.1.0"
   }
 }
