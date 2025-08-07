@@ -13,12 +13,6 @@ ws.on("connection", (_socket) => {
   socket = _socket;
 });
 
-app.use(express.static(import.meta.dirname));
-
-app.listen(PORT, () => {
-  console.log(`Listening on port ${PORT}`);
-});
-
 const watcher = chokidar.watch("./", {
   ignored: (path, stats) =>
     path.startsWith("node_modules") ||
@@ -27,3 +21,9 @@ const watcher = chokidar.watch("./", {
 });
 
 watcher.on("change", (path) => console.log(`File ${path} has been changed`));
+
+app.use(express.static(import.meta.dirname));
+
+app.listen(PORT, () => {
+  console.log(`Listening on port ${PORT}`);
+});
