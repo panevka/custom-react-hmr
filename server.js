@@ -27,14 +27,33 @@ watcher.on("change", (path) => console.log(`File ${path} has been changed`));
 const hmrMiddleware = async (req, res, next) => {
   if (!req.url.endsWith(".js")) return next();
 
-  await fs.readFile(path.join(process.cwd(), req.url), "utf8", (err, data) => {
-    if (err) {
-      console.error(err);
-      return;
-    }
-    res.type("application/javascript");
-    res.send(data);
-  });
+  console.log(req.url);
+  const requestedFile = fs.readFileSync(
+    path.join(process.cwd(), req.url),
+    "utf8",
+  );
+
+  const clientFile = fs.readFileSync(
+    path.join(process.cwd(), "client.js"),
+    "utf8",
+  );
+
+  console.log(clientFile);
+  console.log(requestedFile);
+
+  res.type("application/javascript");
+
+  // res.send(requestedFile);
+
+  res.send(`
+
+    ${clientFile}
+
+    hmrClient(import.meta)
+
+    ${requestedFile}
+
+  `);
 };
 
 app.use(hmrMiddleware);
