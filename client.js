@@ -23,9 +23,8 @@ const hmrClient = (mod) => {
   const url = new URL(mod.url);
   const hot = new HotModule(url.pathname);
   import.meta.hot = hot;
-  window.hotModules.set(url.pathname, hot);
 
   setInterval(() => {
-    handleAccept();
+    hot.handleAccept();
   }, 3000);
 };
