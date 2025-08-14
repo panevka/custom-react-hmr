@@ -23,6 +23,7 @@ const hmrClient = (mod) => {
   const url = new URL(mod.url);
   const hot = new HotModule(url.pathname);
   import.meta.hot = hot;
+  window.hotModules.set(url.pathname, hot);
 };
 
 window.hotModules ??= new Map();
@@ -32,7 +33,8 @@ if (!window.ws) {
   const ws = new window.WebSocket("ws://localhost:3000");
 
   ws.addEventListener("message", (msg) => {
-    const data = JSON.parse(msg);
+    const data = JSON.parse(msg.data);
+    console.log(data);
     const mod = window.hotModules.get(data.file);
     console.log(data.file);
     mod.handleAccept();

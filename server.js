@@ -22,7 +22,13 @@ const watcher = chokidar.watch("./", {
   persistent: true,
 });
 
-watcher.on("change", (path) => console.log(`File ${path} has been changed`));
+watcher.on("change", (path) => {
+  console.log(`File ${path} has been changed`);
+
+  const payload = JSON.stringify({ file: `/${path}` });
+
+  socket.send(payload);
+});
 
 const hmrMiddleware = async (req, res, next) => {
   if (!req.url.endsWith(".js")) return next();
